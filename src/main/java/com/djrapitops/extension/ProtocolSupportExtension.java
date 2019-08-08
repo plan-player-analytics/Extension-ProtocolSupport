@@ -47,7 +47,19 @@ public class ProtocolSupportExtension implements DataExtension {
 
     public ProtocolSupportExtension() {
         storage = new ProtocolSupportStorage();
-        new ProtocolSupportVersionListener(storage).register();
+
+        if (viaVersionIsNotInstalled()) {
+            new ProtocolSupportVersionListener(storage).register();
+        }
+    }
+
+    private boolean viaVersionIsNotInstalled() {
+        try {
+            Class.forName("us.myles.ViaVersion.api.ViaAPI");
+            return false;
+        } catch (ClassNotFoundException e) {
+            return true;
+        }
     }
 
     @Override
