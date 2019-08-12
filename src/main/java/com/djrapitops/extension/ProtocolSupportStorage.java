@@ -69,7 +69,7 @@ public class ProtocolSupportStorage {
 
     private void removePlayer(UUID playerUUID) {
         queryService.execute(
-                "REMOVE FROM plan_version_protocol WHERE uuid=?",
+                "DELETE FROM plan_version_protocol WHERE uuid=?",
                 statement -> {
                     statement.setString(1, playerUUID.toString());
                     statement.execute();
