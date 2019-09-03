@@ -6,7 +6,7 @@
 
     <groupId>com.djrapitops</groupId>
     <artifactId>Extension-ProtocolSupport</artifactId>
-    <version>4.29-R0.3</version>
+    <version>4.29-R0.4</version>
     <build>
         <plugins>
             <plugin>
