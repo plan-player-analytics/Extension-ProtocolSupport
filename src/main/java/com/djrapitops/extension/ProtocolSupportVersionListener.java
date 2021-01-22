@@ -51,17 +51,23 @@ public class ProtocolSupportVersionListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        ProtocolVersion protocolVersion = ProtocolSupportAPI.getProtocolVersion(player);
-        int playerVersion = protocolVersion.getId();
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                storage.storeProtocolVersion(player.getUniqueId(), playerVersion);
-            } catch (ExecutionException ignored) {
-                // Ignore
-            }
-        });
+        try {
+            ProtocolVersion protocolVersion = ProtocolSupportAPI.getProtocolVersion(player);
+            int playerVersion = protocolVersion.getId();
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> storeVersion(player, playerVersion));
+        } catch (IllegalStateException accessBeforeDetect) {
+            // Ignore
+        }
+    }
+
+    private void storeVersion(Player player, int playerVersion) {
+        try {
+            storage.storeProtocolVersion(player.getUniqueId(), playerVersion);
+        } catch (ExecutionException ignored) {
+            // Ignore
+        }
     }
 }
