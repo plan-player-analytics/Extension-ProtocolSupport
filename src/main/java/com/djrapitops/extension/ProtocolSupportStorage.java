@@ -116,8 +116,9 @@ public class ProtocolSupportStorage {
                 .orElseThrow(NotReadyException::new);
         final String sql = "SELECT protocol_version, COUNT(1) as count" +
                 " FROM plan_version_protocol" +
-                " INNER JOIN plan_user_info on plan_version_protocol.uuid=plan_user_info.uuid" +
-                " WHERE plan_user_info.server_uuid=?" +
+                " INNER JOIN plan_users on plan_version_protocol.uuid=plan_users.uuid" +
+                " INNER JOIN plan_user_info on plan_user_info.user_id=plan_users.id" +
+                " WHERE plan_user_info.server_id=(SELECT id FROM plan_servers WHERE uuid=?)" +
                 " GROUP BY protocol_version";
         return queryService.query(sql, statement -> {
             statement.setString(1, serverUUID.toString());
