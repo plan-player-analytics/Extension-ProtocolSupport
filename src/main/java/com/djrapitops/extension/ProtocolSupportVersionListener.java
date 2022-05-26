@@ -22,6 +22,7 @@
 */
 package com.djrapitops.extension;
 
+import com.djrapitops.plan.settings.SchedulerService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -57,7 +58,7 @@ public class ProtocolSupportVersionListener implements Listener {
         try {
             ProtocolVersion protocolVersion = ProtocolSupportAPI.getProtocolVersion(player);
             int playerVersion = protocolVersion.getId();
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> storeVersion(player, playerVersion));
+            SchedulerService.getInstance().runAsync(() -> storeVersion(player, playerVersion));
         } catch (IllegalStateException accessBeforeDetect) {
             // Ignore
         }
