@@ -1,5 +1,5 @@
 /*
-    Copyright(c) 2019 Risto Lahtela (AuroraLS3)
+    Copyright(c) 2019 AuroraLS3
 
     The MIT License(MIT)
 
@@ -20,33 +20,32 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
-package com.djrapitops.extension;
+package net.playeranalytics.extension.protocolsupport;
 
 import com.djrapitops.plan.extension.DataExtension;
-import com.djrapitops.plan.extension.extractor.ExtensionExtractor;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 /**
- * Test for the implementation of the new extension
+ * Factory for ProtocolSupport DataExtension.
  *
  * @author AuroraLS3
  */
-class ExtensionImplementationTest {
+public class ProtocolSupportExtensionFactory {
 
-    private ExtensionExtractor extractor;
-
-    @BeforeEach
-    void prepareExtractor() {
-        DataExtension extension = new ProtocolSupportExtension();
-        extractor = new ExtensionExtractor(extension);
+    private boolean isAvailable() {
+        try {
+            Class.forName("protocolsupport.ProtocolSupport");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
-    @Test
-    @DisplayName("API is implemented correctly")
-    void noImplementationErrors() {
-        extractor.validateAnnotations();
+    public Optional<DataExtension> createExtension() {
+        if (isAvailable()) {
+            return Optional.of(new ProtocolSupportExtension());
+        }
+        return Optional.empty();
     }
-
 }

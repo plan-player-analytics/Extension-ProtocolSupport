@@ -20,32 +20,33 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
-package com.djrapitops.extension;
+package net.playeranalytics.extension.protocolsupport;
 
 import com.djrapitops.plan.extension.DataExtension;
-
-import java.util.Optional;
+import com.djrapitops.plan.extension.extractor.ExtensionExtractor;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /**
- * Factory for ProtocolSupport DataExtension.
+ * Test for the implementation of the new extension
  *
  * @author AuroraLS3
  */
-public class ProtocolSupportExtensionFactory {
+class ExtensionImplementationTest {
 
-    private boolean isAvailable() {
-        try {
-            Class.forName("protocolsupport.ProtocolSupport");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
+    private ExtensionExtractor extractor;
+
+    @BeforeEach
+    void prepareExtractor() {
+        DataExtension extension = new ProtocolSupportExtension();
+        extractor = new ExtensionExtractor(extension);
     }
 
-    public Optional<DataExtension> createExtension() {
-        if (isAvailable()) {
-            return Optional.of(new ProtocolSupportExtension());
-        }
-        return Optional.empty();
+    @Test
+    @DisplayName("API is implemented correctly")
+    void noImplementationErrors() {
+        extractor.validateAnnotations();
     }
+
 }

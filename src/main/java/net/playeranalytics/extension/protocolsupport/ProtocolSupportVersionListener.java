@@ -1,5 +1,5 @@
 /*
-    Copyright(c) 2019 Risto Lahtela (AuroraLS3)
+    Copyright(c) 2019 AuroraLS3
 
     The MIT License(MIT)
 
@@ -20,16 +20,15 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
-package com.djrapitops.extension;
+package net.playeranalytics.extension.protocolsupport;
 
+import com.djrapitops.plan.settings.ListenerService;
 import com.djrapitops.plan.settings.SchedulerService;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.Plugin;
 import protocolsupport.api.ProtocolSupportAPI;
 import protocolsupport.api.ProtocolVersion;
 
@@ -39,17 +38,14 @@ public class ProtocolSupportVersionListener implements Listener {
 
     private final ProtocolSupportStorage storage;
 
-    private final Plugin plugin;
-
     ProtocolSupportVersionListener(
             ProtocolSupportStorage storage
     ) {
         this.storage = storage;
-        plugin = Bukkit.getPluginManager().getPlugin("Plan");
     }
 
     public void register() {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        ListenerService.getInstance().registerListenerForPlan(this);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
